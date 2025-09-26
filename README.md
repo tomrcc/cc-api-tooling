@@ -2,6 +2,8 @@
 
 Some examples of how to use the CC API via a CLI. This can be expanded on and adapted to suit individual usecases and is intended as a starting point to fork your own copy of.
 
+[API Documentation](https://cloudcannon.com/api-documentation/)
+
 ## Update Branches
 
 1. Set up an API key and grab your org UUID in CC, from `Org Settings > Sharing > API Keys`. Make sure to pay attention to what permissions & scope you give your API key, and keep this key private.
