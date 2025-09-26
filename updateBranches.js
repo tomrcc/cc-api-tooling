@@ -1,16 +1,20 @@
 import "dotenv/config";
 
+// Details of repos and branches to change
+const reposToChangeBranches = ["tomrcc/persyporty", "tomrcc/recipe-book"];
+const branchToChange = "staging";
+const branchToChangeTo = "main";
+
 (async () => {
   // Keep this private - don't push to src control & use an env variable
   // Can get apiKey from org settings > sharing > api keys. Set using env variables.
   const apiKey = process.env.CC_API_KEY;
   // Can get org_uuid from org settings > sharing > api keys. Set using env variables.
   const org_uuid = process.env.CC_ORG_UUID;
-
-  // Details of repos and branches to change
-  const reposToChangeBranches = ["tomrcc/persyporty", "tomrcc/recipe-book"];
-  const branchToChange = "staging";
-  const branchToChangeTo = "main";
+  const requestHeader = {
+    "Content-Type": "application/json",
+    "X-API-KEY": apiKey,
+  };
 
   const siteListUrl = `https://app.cloudcannon.com/api/v0/orgs/${org_uuid}/sites`;
   let siteList;
@@ -18,10 +22,7 @@ import "dotenv/config";
   try {
     const response = await fetch(siteListUrl, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": apiKey,
-      },
+      headers: requestHeader,
     });
 
     if (!response.ok) {
@@ -51,10 +52,7 @@ import "dotenv/config";
         try {
           const response = await fetch(branchListUrl, {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "X-API-KEY": apiKey,
-            },
+            headers: requestHeader,
           });
 
           if (!response.ok) {
@@ -83,10 +81,7 @@ import "dotenv/config";
             try {
               const response = await fetch(updateBranchUrl, {
                 method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                  "X-API-KEY": apiKey,
-                },
+                headers: requestHeader,
                 body: JSON.stringify(bodyContent),
               });
               console.log("Sent put request!");

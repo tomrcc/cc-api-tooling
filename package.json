@@ -1,13 +1,12 @@
 {
   "name": "cc-api-tests",
-  "version": "1.0.0",
+  "description": "Testing interfacing with the CC API via a CLI",
+  "type": "module",
   "scripts": {
     "update-branches": "node ./updateBranches.js"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Tom Richardson",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "dotenv": "^17.2.2"
   }
