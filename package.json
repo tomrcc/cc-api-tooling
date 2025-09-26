@@ -1,0 +1,14 @@
+{
+  "name": "cc-api-tests",
+  "version": "1.0.0",
+  "scripts": {
+    "update-branches": "node ./updateBranches.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.2.2"
+  }
+}
