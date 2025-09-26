@@ -2,11 +2,10 @@ import "dotenv/config";
 
 (async () => {
   // Keep this private - don't push to src control & use an env variable
-  // Can get apiKey from org settings > sharing > api keys
+  // Can get apiKey from org settings > sharing > api keys. Set using env variables.
   const apiKey = process.env.CC_API_KEY;
-
-  // Can get org_uuid from org settings > sharing > api keys
-  const org_uuid = "bba64abf-2a5e-4434-9d12-7412a152ea1a";
+  // Can get org_uuid from org settings > sharing > api keys. Set using env variables.
+  const org_uuid = process.env.CC_ORG_UUID;
 
   // Details of repos and branches to change
   const reposToChangeBranches = ["tomrcc/persyporty", "tomrcc/recipe-book"];
