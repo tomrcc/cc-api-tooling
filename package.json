@@ -3,7 +3,8 @@
   "description": "Testing interfacing with the CC API via a CLI",
   "type": "module",
   "scripts": {
-    "update-branches": "node ./updateBranches.js"
+    "update-branches-by-repos": "node ./updateBranchesByRepos.js",
+    "update-branches-by-site-names": "node ./updateBranchesBySiteNames.js"
   },
   "author": "Tom Richardson",
   "license": "ISC",
