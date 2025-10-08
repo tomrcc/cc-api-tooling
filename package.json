@@ -3,6 +3,7 @@
   "description": "Testing interfacing with the CC API via a CLI",
   "type": "module",
   "scripts": {
+    "merge-branches-in-repo": "node ./mergeBranchesInRepo.js",
     "update-branches-by-repos": "node ./updateBranchesByRepos.js",
     "update-branches-by-site-names": "node ./updateBranchesBySiteNames.js"
   },
