@@ -147,9 +147,7 @@ const branchesToMergeTo = ["main"];
                 throw new Error(`Response status: ${response.status}`);
               }
 
-              const updatedPublishBranchStatus = JSON.parse(
-                await response.text()
-              );
+              const updatedPublishBranchStatus = await response.json();
 
               // Check if there are any changes to publish to publish branch
               if (updatedPublishBranchStatus.ahead_by <= 0) {
