@@ -41,7 +41,7 @@ const branchToChangeTo = "main";
 
 2. Run `npm run update-branches-by-site-names` in the root of the project.
 
-## Update Branches by Site
+## Merge Branches by Site
 Merge changes from one branch into multiple other branches at the same time.
 
 1. Go to `mergeBranchesInRepo.js` and add your branch and repo details. You can set multiple destination branches to merge the changes from the source branch into.
