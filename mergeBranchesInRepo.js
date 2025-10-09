@@ -4,8 +4,8 @@ import "dotenv/config";
 // For any site that on CloudCannon that is synced to the repoToChangeBranches
 // Typically used for monorepos using multiple branches for different sites
 const repoToChangeBranches = "tomrcc/persyporty";
-const branchToMergeFrom = "main";
-const branchesToMergeTo = ["staging"];
+const branchToMergeFrom = "staging";
+const branchesToMergeTo = ["main"];
 
 (async () => {
   // Keep this private - don't push to src control & use an env variable
@@ -45,7 +45,6 @@ const branchesToMergeTo = ["staging"];
       site.storage_provider_details.full_name === repoToChangeBranches &&
       site.storage_provider_details.branch === branchToMergeFrom
     ) {
-      // console.log({ site });
       console.log(
         `Found a CloudCannon site belonging to the repo ${repoToChangeBranches}, from branch ${branchToMergeFrom}.`
       );
@@ -64,23 +63,13 @@ const branchesToMergeTo = ["staging"];
       } catch (error) {
         console.error(error.message);
       }
-      // TODO:
-      // Check the site uses the branch to merge from
-      // Loop through the branches to publish through and
-      // // Make that the new publish branch
-      // // Compare if there are any changes (if ahead > 0 by since we're on the branchToMergeFrom) to make
-      // If not don't need to merge and console as much
-      // // Merge changes to that branch
-      // // Compare if there are any changes (if ahead > 0 by since we're on the branchToMergeFrom) still to make
-      // // If not we've been successful
-      // // Go to the next branch in the loop
 
       for (const branchToMergeTo of branchesToMergeTo) {
         await Promise.all(
           branchList.map(async (branch) => {
-            // if (branch !== branchToMergeTo) {
-            //   return;
-            // }
+            if (branch.name !== branchToMergeTo) {
+              return;
+            }
             const publishBranchUrl = `https://app.cloudcannon.com/api/v0/sites/${site.uuid}/providers/branches/publish`;
             const bodyContent = {
               branch: branchToMergeTo,
@@ -94,7 +83,7 @@ const branchesToMergeTo = ["staging"];
               });
 
               console.log(
-                `Sent a post request to update the site's publish branch to ${branchToMergeTo}`
+                `Changed the publish branch on site: ${site.site_name} to ${branchToMergeTo}, in preparation to merge in changes from the branch ${branchToMergeFrom}.`
               );
             } catch (error) {
               console.error(error.message);
@@ -113,14 +102,13 @@ const branchesToMergeTo = ["staging"];
                 throw new Error(`Response status: ${response.status}`);
               }
 
-              console.log({ response });
-              const publishBranchStatus = JSON.parse(response);
+              const publishBranchStatus = await response.json();
               // Check if there are any changes to publish to publish branch
               if (publishBranchStatus.ahead_by <= 0) {
                 console.log(
-                  `Nothing to merge to publish branch: ${branchToMergeTo}`
+                  `Nothing to merge from origin branch, ${branchToMergeFrom}, to publish branch: ${branchToMergeTo}`
                 );
-                // return;
+                return;
               }
             } catch (error) {
               console.error(error.message);
@@ -139,7 +127,9 @@ const branchesToMergeTo = ["staging"];
                 throw new Error(`Response status: ${response.status}`);
               }
 
-              console.log(`Sent merge request to branch ${branchToMergeTo}`);
+              console.log(
+                `Merging branch ${branchToMergeFrom} (which builds the site: ${site.site_name}) into ${branchToMergeTo} on the repo ${repoToChangeBranches}.`
+              );
             } catch (error) {
               console.error(error.message);
             }
@@ -157,14 +147,16 @@ const branchesToMergeTo = ["staging"];
                 throw new Error(`Response status: ${response.status}`);
               }
 
-              const updatedPublishBranchStatus = JSON.parse(response);
+              const updatedPublishBranchStatus = JSON.parse(
+                await response.text()
+              );
 
               // Check if there are any changes to publish to publish branch
               if (updatedPublishBranchStatus.ahead_by <= 0) {
                 console.log(
-                  `Successfully merged branch: ${branchToMergeFrom}, into branch: ${branchToMergeTo}.`
+                  `Successfully merged branch: ${branchToMergeFrom}, into branch: ${branchToMergeTo}, on repo: ${repoToChangeBranches}.`
                 );
-                // return;
+                return;
               }
             } catch (error) {
               console.error(error.message);
